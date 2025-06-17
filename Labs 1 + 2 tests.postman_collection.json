@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "00f54a42-3237-4485-b0e3-a7fc9380d546",
+		"name": "Labs 1 + 2 tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29404489"
+	},
+	"item": [
+		{
+			"name": "Ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);",
+							"pm.test('pong',       () => pm.response.text().includes('pong'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/ping"
+			},
+			"response": []
+		},
+		{
+			"name": "Hello",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);",
+							"const j = pm.response.json();",
+							"pm.test('Hello World', () => j.message === 'Hello World!');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseUrl}}/hello"
+			},
+			"response": []
+		},
+		{
+			"name": "Init filter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"size\": 1000, \"k\": 3, \"seed\": 17 }"
+				},
+				"url": "{{baseUrl}}/filter/init"
+			},
+			"response": []
+		},
+		{
+			"name": "Add key (hello)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"key\": \"hello\" }"
+				},
+				"url": "{{baseUrl}}/filter/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Contains true (hello)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);",
+							"pm.test('Body true',  () => pm.response.json() === true);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/filter/contains?key=hello",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"filter",
+						"contains"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "hello"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contains false (world)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status 200', () => pm.response.code === 200);",
+							"pm.test('Body false', () => pm.response.json() === false);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/filter/contains?key=world",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"filter",
+						"contains"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "world"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "default"
+		}
+	]
+}
